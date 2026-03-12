@@ -1,0 +1,27 @@
+{
+  "name": "tg-bot",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm -w apps/bot run dev",
+    "build": "npm -ws run build",
+    "start": "npm -w apps/bot run start",
+    "api:dev": "npm -w apps/api run dev",
+    "miniapp:dev": "npm -w apps/miniapp run dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "description": "tg bot",
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "prisma": "^7.5.0"
+  }
+}
