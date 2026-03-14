@@ -31,80 +31,84 @@ export default function App() {
   //   WebApp.expand();
   // }, []);
 
-  // useEffect(() => {
-  //   // MVP: просто регаем/апдейтим пользователя и сохраняем userId локально.
-  //   (async () => {
-  //     try {
-  //       const res = await fetch(`${API_BASE}/auth/telegram`, {
-  //         method: "POST",
-  //         headers: { "content-type": "application/json" },
-  //         body: JSON.stringify({ initData }),
-  //       });
-  //       if (!res.ok) return;
-  //       const data = (await res.json()) as { user: { id: string } };
-  //       setUserId(data.user.id);
-  //     } catch {
-  //       // ignore
-  //     }
-  //   })();
-  // }, [initData]);
+  useEffect(() => {
+    // MVP: просто регаем/апдейтим пользователя и сохраняем userId локально.
+    (async () => {
+      try {
+        const res = await fetch(`${API_BASE}/auth/telegram`, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ initData }),
+        });
+        if (!res.ok) return;
+        const data = (await res.json()) as { user: { id: string } };
+        setUserId(data.user.id);
+      } catch {
+        // ignore
+      }
+    })();
+  }, [initData]);
 
-  // async function loadNextQuestion() {
-  //   setStatus("Загружаю вопрос...");
-  //   setShowAnswer(false);
-  //   setAnswer(null);
-  //   setUserAnswer("");
+  async function loadNextQuestion() {
+    setStatus("Загружаю вопрос...");
+    setShowAnswer(false);
+    setAnswer(null);
+    setUserAnswer("");
 
-  //   const res = await fetch(`${API_BASE}/questions?topic=${encodeURIComponent(topic)}&limit=1`);
-  //   if (!res.ok) {
-  //     setStatus("Не удалось загрузить вопросы (API недоступен?)");
-  //     return;
-  //   }
-  //   const data = (await res.json()) as { items: Array<{ id: string; topic: string; text: string }> };
-  //   const q = data.items[0];
-  //   if (!q) {
-  //     setStatus("Пока нет вопросов по теме");
-  //     setQuestion(null);
-  //     return;
-  //   }
-  //   setQuestion(q);
-  //   setStatus("");
-  // }
+    const res = await fetch(
+      `${API_BASE}/questions?topic=${encodeURIComponent(topic)}&limit=1`,
+    );
+    if (!res.ok) {
+      setStatus("Не удалось загрузить вопросы (API недоступен?)");
+      return;
+    }
+    const data = (await res.json()) as {
+      items: Array<{ id: string; topic: string; text: string }>;
+    };
+    const q = data.items[0];
+    if (!q) {
+      setStatus("Пока нет вопросов по теме");
+      setQuestion(null);
+      return;
+    }
+    setQuestion(q);
+    setStatus("");
+  }
 
-  // async function revealAnswer() {
-  //   if (!question) return;
-  //   setStatus("Загружаю ответ...");
-  //   const res = await fetch(`${API_BASE}/questions/${question.id}`);
-  //   if (!res.ok) {
-  //     setStatus("Не удалось загрузить ответ");
-  //     return;
-  //   }
-  //   const data = (await res.json()) as { answer: string };
-  //   setAnswer({ answer: data.answer });
-  //   setShowAnswer(true);
-  //   setStatus("");
-  // }
+  async function revealAnswer() {
+    if (!question) return;
+    setStatus("Загружаю ответ...");
+    const res = await fetch(`${API_BASE}/questions/${question.id}`);
+    if (!res.ok) {
+      setStatus("Не удалось загрузить ответ");
+      return;
+    }
+    const data = (await res.json()) as { answer: string };
+    setAnswer({ answer: data.answer });
+    setShowAnswer(true);
+    setStatus("");
+  }
 
-  // async function saveAttempt() {
-  //   if (!question) return;
-  //   setStatus("Сохраняю попытку...");
-  //   const res = await fetch(`${API_BASE}/attempts`, {
-  //     method: "POST",
-  //     headers: { "content-type": "application/json" },
-  //     body: JSON.stringify({
-  //       initData,
-  //       questionId: question.id,
-  //       userAnswer,
-  //       selfScore,
-  //     }),
-  //   });
-  //   if (!res.ok) {
-  //     setStatus("Не удалось сохранить (возможно, API/БД не подняты)");
-  //     return;
-  //   }
-  //   setStatus("Сохранено");
-  //   setTimeout(() => setStatus(""), 800);
-  // }
+  async function saveAttempt() {
+    if (!question) return;
+    setStatus("Сохраняю попытку...");
+    const res = await fetch(`${API_BASE}/attempts`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        initData,
+        questionId: question.id,
+        userAnswer,
+        selfScore,
+      }),
+    });
+    if (!res.ok) {
+      setStatus("Не удалось сохранить (возможно, API/БД не подняты)");
+      return;
+    }
+    setStatus("Сохранено");
+    setTimeout(() => setStatus(""), 800);
+  }
 
   return (
     <div className="container">
@@ -130,9 +134,9 @@ export default function App() {
               </option>
             ))}
           </select>
-          {/* <button className="btn" onClick={loadNextQuestion}>
+          <button className="btn" onClick={loadNextQuestion}>
             Следующий вопрос
-          </button> */}
+          </button>
         </div>
 
         {status ? <div className="status">{status}</div> : null}
@@ -163,12 +167,16 @@ export default function App() {
                 <option value={4}>4</option>
                 <option value={5}>5 — уверен</option>
               </select>
-              {/* <button className="btnSecondary" onClick={saveAttempt} disabled={!userAnswer.trim()}>
+              <button
+                className="btnSecondary"
+                onClick={saveAttempt}
+                disabled={!userAnswer.trim()}
+              >
                 Сохранить
               </button>
               <button className="btnGhost" onClick={revealAnswer}>
                 Показать эталон
-              </button> */}
+              </button>
             </div>
 
             {showAnswer && answer ? (

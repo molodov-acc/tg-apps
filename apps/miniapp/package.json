@@ -9,14 +9,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@twa-dev/sdk": "^8.0.2",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "@twa-dev/sdk": "^8.0.2"
   },
   "devDependencies": {
+    "@vitejs/plugin-react": "^5.0.2",
     "@types/react": "^19.1.12",
     "@types/react-dom": "^19.1.9",
-    "@vitejs/plugin-react": "^5.0.2",
     "typescript": "~5.9.3",
     "vite": "^8.0.0"
   }

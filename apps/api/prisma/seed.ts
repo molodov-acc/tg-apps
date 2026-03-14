@@ -1,10 +1,16 @@
 import dotenv from "dotenv";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../src/generated/prisma/client";
 import { questions } from "@pkg/shared";
 
 dotenv.config();
 
-const prisma = new PrismaClient();
+import { PrismaPg } from "@prisma/adapter-pg";
+
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL,
+});
+
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
   const existing = await prisma.question.count();
@@ -35,4 +41,3 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
-

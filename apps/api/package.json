@@ -1,33 +1,36 @@
 {
   "name": "@app/api",
   "private": true,
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsc -p tsconfig.json",
     "start": "node dist/server.js",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:studio": "prisma studio",
-    "seed": "tsx src/seed.ts"
+    "build": "tsc -p tsconfig.json",
+    "seed": "tsx prisma/seed.ts",
+    "prisma:generate": "prisma generate --schema=prisma/schema.prisma",
+    "prisma:migrate": "prisma migrate dev --schema=prisma/schema.prisma",
+    "prisma:studio": "prisma studio --schema=prisma/schema.prisma"
   },
   "dependencies": {
+    "@prisma/client": "^7.5.0",
+    "pg": "^8.20.0",
+    "fastify": "^5.6.0",
     "@fastify/cors": "^10.1.0",
     "@fastify/helmet": "^13.0.0",
-    "@pkg/shared": "1.0.0",
-    "@prisma/adapter-pg": "^7.5.0",
     "dotenv": "^17.3.1",
-    "fastify": "^5.6.0",
-    "pg": "^8.20.0",
-    "zod": "^4.1.5"
+    "zod": "^4.1.5",
+    "@prisma/adapter-pg": "^7.5.0"
   },
   "devDependencies": {
-    "@prisma/client": "^7.5.0",
     "@types/node": "^25.3.5",
     "@types/pg": "^8.18.0",
     "prisma": "^7.5.0",
-    "ts-node": "^10.9.2",
     "tsx": "^4.21.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
+  },
+  "prisma": {
+    "schema": "prisma/schema.prisma"
   }
 }

@@ -9,6 +9,5 @@
     "esModuleInterop": true,
     "noEmit": false
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "prisma/seed.ts"]
 }
-
